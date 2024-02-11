@@ -1,9 +1,23 @@
 .main {
-    margin-top: 5%;
+    margin-top: 75px;
 }
 .banner {
     overflow: hidden;
+    background-color: white;
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
+    display:flex;
+    align-content:center;
+}
+.banner-redirect{
+    font-size:large;
+    align-self: center;
+    height: fit-content;
+    color:black;
+    text-decoration:none;
+}
+.banner-redirect:hover{
+    height: fit-content;
+    background-color: lightgray;
 }
