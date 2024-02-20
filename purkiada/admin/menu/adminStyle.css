@@ -1,0 +1,14 @@
+.tableElements{
+    border:1px solid black;
+    text-align:center
+}
+@font-face { font-family: scary; src: url('./scaryFont.ttf'); } 
+.scary{
+    color:red;
+    text-align:center;
+    font-size: 15vh;
+    padding: 24vh 0;
+    font-family: "scary", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
