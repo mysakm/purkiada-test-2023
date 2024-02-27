@@ -46,16 +46,21 @@ function menus(){
                 $stringPreparation = $stringPreparation . "(" . ($processedQuestionNumber + 1) . ', "' . $_POST["task"][$processedQuestionNumber] . '", ' . $_POST["type". ($processedQuestionNumber+1)] . ', ' . $_POST["points"][$processedQuestionNumber] . ')';
                 $processedQuestionNumber++;
                 $fileNumber = 0;
+                $filesUploaded= [];
                 //var_dump($_FILES);
                 //echo("<br>");
                 //echo empty($_FILES["files" . ($processedQuestionNumber)][($fileNumber)]);
                 while(!empty($_FILES["files" . ($processedQuestionNumber)]["name"][$fileNumber])){
                     $processedFile = $_FILES["files" . $processedQuestionNumber]["name"][$fileNumber];
                     $fileType = strtolower(pathinfo($processedFile, PATHINFO_EXTENSION));
-                    echo $fileType;
                     $target_file = "../../data/questions/Otazka" . $processedQuestionNumber . "_" . ($fileNumber+1) . "." . $fileType;
+                    $filesUploaded[$fileNumber] = $target_file;
                     move_uploaded_file($_FILES["files" . $processedQuestionNumber]["tmp_name"][$fileNumber], $target_file);
                     $fileNumber++;
+                }
+                foreach ($filesUploaded as $downloadable) {
+                    $downloadableEdit = "../" . $downloadable;
+                    $stringPreparation = preg_replace("({file})", '<a href=' . $downloadableEdit . ' download>Soubor ke stažení</a>', $stringPreparation, 1);
                 }
             }
             $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
