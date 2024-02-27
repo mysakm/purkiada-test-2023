@@ -7,7 +7,7 @@
     $result = $connect->query($query) or die("Fault1");
     $connect->close();
     ?>
-    <form id="competition" action="./answersSubmit.php" method="POST">
+    <form id="competition" action="./answersSubmit.php" enctype="multipart/form-data" method="POST">
     <?php
     while($row = $result->fetch_object()) {
         $questionNumber = $row->question_number;
@@ -18,7 +18,7 @@
             echo('<textarea form="competition" name="answers[]"></textarea>');
         }
         elseif( $type == "2") {
-            echo('<input type="file">');
+            echo('<input type="file" name="Odpoved' . $questionNumber .'">');
         }
     }
     ?>
