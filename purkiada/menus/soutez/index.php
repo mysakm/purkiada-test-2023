@@ -4,10 +4,15 @@ session_start();
 if(!empty($_POST["login"])){
     $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
-    $query = "SELECT * FROM `zaci`";
+    $query = 'SELECT * FROM `zaci` WHERE username = "' . $_POST["login"] . '" AND pwd = "' . $_POST["password"] . '"';
     $result = $connect->query($query) or die("Fault1");
     $connect->close();
-    header("Location: ./soutez-otazky");
+    $resultUser = ($result->fetch_object())->zak_id;
+    if (!empty($resultUser)) {
+        header("Location: ./soutez-otazky");
+        $_SESSION["username"] = $_POST["login"];
+        die();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -22,6 +27,11 @@ if(!empty($_POST["login"])){
         <input type="text" name="login">
         <input type="password" name="password">
         <input type="submit">
+        <?php
+            if (isset($_POST["login"])) {
+                echo("Wrong login details");
+            }
+        ?>
     </form>
 </body>
 </html>

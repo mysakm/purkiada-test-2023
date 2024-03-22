@@ -1,5 +1,8 @@
 <?php
     session_start();
+    if (empty($_SESSION["username"])){
+        die();
+    }
     require("../../../data/sql.php");
     $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
