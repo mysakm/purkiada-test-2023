@@ -47,9 +47,6 @@ function menus(){
                 $processedQuestionNumber++;
                 $fileNumber = 0;
                 $filesUploaded= [];
-                //var_dump($_FILES);
-                //echo("<br>");
-                //echo empty($_FILES["files" . ($processedQuestionNumber)][($fileNumber)]);
                 while(!empty($_FILES["files" . ($processedQuestionNumber)]["name"][$fileNumber])){
                     $processedFile = $_FILES["files" . $processedQuestionNumber]["name"][$fileNumber];
                     $fileType = strtolower(pathinfo($processedFile, PATHINFO_EXTENSION));
