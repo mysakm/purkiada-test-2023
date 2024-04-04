@@ -11,13 +11,13 @@
 $isMobile = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
 if ($isMobile and !isset($_POST["switch"])) {
     ?>
-    <p>Hello! We've detected that you're using a mobile device. Would you like to switch to a mobile-friendly version of our website?</p>
+    <p>Ahoj! Zjistili jsme, že používáš mobilní zařízení. Chceš přepnout na verzi pro telefony?</p>
     <a href="./m/index.php">
-        <button type="button">Yes</button>
+        <button type="button">Ano</button>
     </a>
     <form action="" method="POST">
         <input type="hidden" name="switch" value="No">
-        <input type="submit" value="No">
+        <input type="submit" value="Ne">
     </form>
     <?php
 }else{
@@ -65,7 +65,7 @@ if ($isMobile and !isset($_POST["switch"])) {
             <p>Informace</p>
         </a>
     </div>
-    <div class="main">
+    <div class="main"> <!-- v této třídě je hlavní tělo stránky, pokud používáte zpracovaný header -->
     </div>
 </body>
 <?php

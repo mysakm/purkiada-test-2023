@@ -3,7 +3,7 @@ session_start();
 require('../data/sql.php');
 
 if(!empty($_POST["username"])){
-    $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+    $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
     $query = 'SELECT `user_id` FROM `permanent_logins` WHERE `username` = "' . $_POST["username"] . '" AND `pwdHash` = "' . hash('ripemd160', $_POST['pwd']) . '"';
     $result = $connect->query($query) or die("Fault");
@@ -18,7 +18,7 @@ if(!empty($_POST["username"])){
             $prepid = random_int(0, 15);
             $sid .= dechex($prepid);
         }
-        $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+        $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
         $connect->set_charset("utf8") or die("Charset chyba.");
         $query = 'INSERT INTO `session_management`(`session_id`, `user_id`) VALUE ("' . $sid . '",' . $resultUser . ')';
         $result = $connect->query($query) or die("Fault");
@@ -31,7 +31,7 @@ if(!empty($_POST["username"])){
         login("Wrong login info.");
     }
 }elseif(!empty($_SESSION["access-key"])){
-    $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+    $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
     $query = 'SELECT * FROM `session_management` WHERE `session_id` = "' . $_SESSION["access-key"] . '"';
     echo($query);

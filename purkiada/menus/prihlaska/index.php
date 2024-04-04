@@ -44,7 +44,7 @@
         }else{
             $connect = new mysqli($host, $user, $pass, $db) or die("Připojení se nezdařilo.");
             $connect->set_charset("utf8") or die("Charset chyba.");
-            $query = "SELECT COUNT(*) as count FROM `schools` WHERE `IZO` = '" . $_POST['school'] . "'";
+            $query = "SELECT COUNT(*) as count FROM `schools` WHERE `full_name` = '" . $_POST['school'] . "'";
             $result = $connect->query($query) or die("Chyba ziskani škol.");
             $count;
             while($row = $result ->fetch_object()) {
@@ -95,7 +95,9 @@
             }else{
                 $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
                 $connect->set_charset("utf8") or die("Charset chyba.");
-                $query = 'INSERT INTO `zaci`(`zak_id`, `name`, `surname`, `email`, `schools_id`) VALUE (NULL, "' . $_POST['name'] . '", "' . $_POST['surname'] . '", "' . $_POST['email'] . '", ' . $_POST['school'] . ')';
+                $query1 = "SELECT `IZO` FROM `schools` WHERE full_name = '" . $_POST['school'] ."'";
+                $result = $connect->query($query1) or die ("chyba ziskani info IZO");
+                $query = 'INSERT INTO `zaci`(`zak_id`, `name`, `surname`, `email`, `schools_id`) VALUE (NULL, "' . $_POST['name'] . '", "' . $_POST['surname'] . '", "' . $_POST['email'] . '", ' . $result->fetch_object()->IZO . ')';
                 $result = $connect->query($query) or die("chyba ziskani info 2" . print_r($connect));
                 $connect->close();
                 ?>
@@ -152,23 +154,11 @@ function login_sheet($isError, $where){
                 </tr>
                 <tr>
                     <td>
-                        <p <?php if($where == "school"){echo('style="color:red"');}?>>IZO školy:</p>
+                        <p <?php if($where == "school"){echo('style="color:red"');}?>>Škola:</p>
                     </td>
                     <td>
-                        <input id="school" type="text" name="school" list="schools">
-                        <datalist id="schools">
-                        <?php
-                        $connect = new mysqli($host, $user, $pass, $db) or die("Připojení se nezdařilo.");
-                        $connect->set_charset("utf8") or die("Charset chyba.");
-                        $query = "SELECT IZO, full_name FROM `schools` WHERE 1";
-                        $result = $connect->query($query) or die("Chyba ziskani škol.");
-                        while($row = $result->fetch_object()) {
-                            $fullname = $row->full_name;
-                            $izo = $row->IZO;
-                            echo('<option value="' . $izo . '">' . $fullname . ',' . $izo . '</option>');
-                        }
-                        ?>
-                        </datalist>
+                        <input id="school" type="text" name="school" list="schools" placeholder="Zadej plné jméno školy nebo IZO zde.." onkeyup="javascript:fetchData(this.value)">
+                        <span id="search_results"></span>
                     </td>
                 </tr>
             </table>
@@ -179,6 +169,39 @@ function login_sheet($isError, $where){
     <script>
         function gdprPopup() {
             alert("1. Dávám souhlas se s evidencí osobních údajů podle zák.č. 101/2000Sb., v platném znění. Souhlasím s tím, aby organizační tým soutěže evidoval mé osobní údaje, případně údaje mého dítěte, poskytnuté v souvislosti s účastí v soutěži. Jedná se o tyto údaje: jméno, příjmení, email, škola, kterou v současnosti navštěvuji.\n 2. Tyto údaje budou použity pouze pro účely evidence soutěžících, nebudou nikomu poskytnuty a po skončení a vyhodnocení soutěže budou smazány.\n3. Souhlasím také s pořizováním a uveřejněním hromadných fotografií ze soutěže za účelem dokumentace a propagace soutěže na webu školy.\n4. Prohlašuji, že jsem byl/a řádně informován/a o všech skutečnostech dle ustanovení § 11 zákona č. 101/2000Sb., v platném znění.");
+        }
+        function fetchData(query) {
+            if (query.length > 4){
+                ajaxFormData = new FormData();
+                ajaxFormData.append("query", query);
+                ajaxRequest = new XMLHttpRequest();
+                ajaxRequest.open("POST", "./school_board_requests.php");
+                ajaxRequest.send(ajaxFormData);
+                ajaxRequest.onreadystatechange = function(){
+                    if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200){
+                        html = '<div class="list-group">';
+                        if (ajaxRequest.responseText.charAt(0) != "<"){
+                            response = JSON.parse(ajaxRequest.responseText);
+                        }
+                        if (response.length > 0){
+                            for (var count = 0; count < response.length; count++){
+                                html += '<a href="#" onclick="getText(this)"><p>' + response[count].fullname + "</a></p>";
+                            }
+                        }else{
+                            html += "<p>Nemohli jsme najít žádný záznam..</p>";
+                        }
+                        html += "</div>";
+                        document.getElementById("search_results").innerHTML = html;
+                    }
+                }
+            }else{
+                document.getElementById('search_results').innerHTML = '';
+            }
+        }
+        function getText(event){
+            dataToEnter = event.textContent;
+            document.getElementById("school").value = dataToEnter;
+            document.getElementById("search_results").innerHTML = "";
         }
     </script>
     <?php if($isError) {
