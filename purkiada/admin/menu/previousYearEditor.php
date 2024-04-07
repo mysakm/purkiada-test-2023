@@ -6,10 +6,10 @@
     <title>Purkiáda - nastavení úvodní stránky</title>
 </head>
 <body>
-    <form action="" id="mainPageForm" type="POST">
-        <textarea form="mainPageForm" rows="50" cols="150">
+    <form action="" id="prevYearForm" type="POST">
+        <textarea form="prevYearForm" rows="50" cols="150">
             <?php
-            echo(readfile("../../index.php"));
+            echo(readfile("../../menus/predchozi-rocniky/index.php"));
             ?>
         </textarea>
     </form>
