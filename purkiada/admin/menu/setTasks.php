@@ -2,7 +2,7 @@
 session_start();
 require("../../data/sql.php");
 if(!empty($_SESSION["access-key"])){
-    $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+    $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
     $query = 'SELECT * FROM `session_management` WHERE `session_id` = "' . $_SESSION["access-key"] . '"';
     $result = $connect->query($query) or die("Fault");
@@ -60,7 +60,7 @@ function menus(){
                     $stringPreparation = preg_replace("({file})", '<a href=' . $downloadableEdit . ' download>Soubor ke stažení</a>', $stringPreparation, 1);
                 }
             }
-            $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+            $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
             $connect->set_charset("utf8") or die("Charset chyba.");
             $query = "DELETE FROM `questions` WHERE 1";
             $result = $connect->query($query) or die("Fault2");
@@ -68,7 +68,7 @@ function menus(){
             $result = $connect->query($query) or die("Fault3");
             $connect->close();
         }
-        $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+        $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
         $connect->set_charset("utf8") or die("Charset chyba.");
         $query = "SELECT * FROM `questions`";
         $result = $connect->query($query) or die("Fault4");

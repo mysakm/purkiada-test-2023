@@ -2,7 +2,7 @@
 session_start();
 require("../../data/sql.php");
 if(!empty($_SESSION["access-key"])){
-    $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+    $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
     $query = 'SELECT * FROM `session_management` WHERE `session_id` = "' . $_SESSION["access-key"] . '"';
     $result = $connect->query($query) or die("Fault");
@@ -34,10 +34,23 @@ function menus(){
 </head>
 <?php
     if(isset($_POST["email-text"])){
-        $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+        $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
         $connect->set_charset("utf8") or die("Charset chyba.");
         $submitEmailText = str_replace("\r\n", "<br>", $_POST['email-text']);
-        $query = 'UPDATE `competition_status` SET `email_template`= "' . $submitEmailText . '" WHERE 1';
+        $submitEmailSubject = str_replace("\r\n", "<br>", $_POST['title']);
+        switch ($_GET['action']) {
+            case 'setEmailsBefore':
+                $query = 'UPDATE `competition_status` SET `upcoming_email_template`= "' . $submitEmailText . '",`upcoming_email_title`= "' . $submitEmailSubject . '" WHERE 1';
+                break;
+            
+            case 'setEmailsLogins':
+                $query = 'UPDATE `competition_status` SET `login_email_template`= "' . $submitEmailText . '",`login_email_title`= "' . $submitEmailSubject . '" WHERE 1';
+                break;
+            
+            case 'setEmailsAfterwards':
+                $query = 'UPDATE `competition_status` SET `result_email_template`= "' . $submitEmailText . '",`result_email_title`= "' . $submitEmailSubject . '" WHERE 1';
+                break;
+        }
         $result = $connect->query($query) or die("Fault1");
         $connect->close();
     }
@@ -45,18 +58,59 @@ function menus(){
 <body>
     <a href="./index.php"><p style="background-color:lightgray; width:30px">Zpět</p></a>
     <form action="" id="emailForm" method="POST">
-        <textarea form="emailForm" name="email-text" rows="20" cols="75"><?php
-        $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
+        <?php
+        $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
         $connect->set_charset("utf8") or die("Charset chyba.");
-        $query = "SELECT email_template FROM `competition_status`";
+        $query = "SELECT upcoming_email_template, login_email_template, result_email_template, upcoming_email_title, login_email_title, result_email_title FROM `competition_status`";
         $result = $connect->query($query) or die("Fault1");
         $connect->close();
         while($row = $result->fetch_object()) {
-            $emailText = $row->email_template;
+            $beforeEmailText = $row->upcoming_email_template;
+            $loginEmailText = $row->login_email_template;
+            $resultEmailText = $row->result_email_template;
+            $beforeEmailSubject = $row->upcoming_email_title;
+            $loginEmailSubject = $row->login_email_title;
+            $resultEmailSubject = $row->result_email_title;
+        }
+        switch ($_GET['action']) {
+            case 'setEmailsBefore':
+                $emailText = $beforeEmailText;
+                $emailSubject = $beforeEmailSubject;
+                break;
+            
+            case 'setEmailsLogins':
+                $emailText = $loginEmailText;
+                $emailSubject = $loginEmailSubject;
+                break;
+            
+            case 'setEmailsAfterwards':
+                $emailText = $resultEmailText;
+                $emailSubject = $resultEmailSubject;
+                break;
         }
         $emailText = str_replace("<br>", "\n", $emailText);
-        echo($emailText);
-        ?></textarea><br>
+    ?>
+    <table>
+        <tr>
+            <td>
+                Předmět:
+            </td>
+            <td>
+                <input type="text" name="title" value="<?php echo($emailSubject) ?>">
+            </td>
+        <tr>
+            <td>
+                Text:
+            </td>
+            <td>
+                <textarea form="emailForm" name="email-text" rows="20" cols="75"><?php
+                    echo($emailText);
+                    ?>
+                </textarea>
+            </td>
+        </tr>
+    </table>
+        <input type="hidden" name="action" value="<?php echo($_GET['action'])?>">
         <input type="submit" value="Nastavit">
     </form>
     <p>Speciální znaky:</p>
@@ -64,6 +118,8 @@ function menus(){
     <p>{eventDate} - doplní datum podle dne soutěže (nastavitelné v hlavním admin menu, formát d. m. y)</p>
     <p>{eventYear} - doplní rok podle dne soutěže</p>
     <p>{eventDay} - doplní jméno dne v týdnu podle dne soutěže</p>
+    <p>{login} - doplní přihlašovací jméno žáka</p>
+    <p>{password} - doplní přihlašovací heslo žáka</p>
 </body>
 </html>
 <?php
