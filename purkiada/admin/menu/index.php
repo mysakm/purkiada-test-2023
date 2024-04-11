@@ -55,7 +55,9 @@ function menus(){
                     $query = "DELETE FROM `zaci` WHERE 1";
                     $query2 = "ALTER TABLE `zaci` AUTO_INCREMENT = 1";
                     $query3 = "UPDATE `competition_status` SET `registration_open`=0,`competition_open`=0,`results_available`=0,`upcoming_email_sent`=0,`login_email_sent`=0,`result_email_sent`=0 WHERE 1";
+                    $query5 = "DELETE FROM `answers` WHERE 1";
                     $query4 = "DELETE FROM `questions` WHERE 1";
+                    $connect->query($query5) or die("Fault5");
                     $connect->query($query) or die("Fault1");
                     $connect->query($query2) or die("Fault2");
                     $connect->query($query3) or die("Fault3");
@@ -156,7 +158,7 @@ function menus(){
         $connect->set_charset("utf8") or die("Charset chyba.");
         $query = "SELECT * FROM `competition_status`";
         $query2 = "SELECT * FROM `questions` LIMIT 1";
-        $query3 = "SELECT * FROM `zaci` LIMIT 1";
+        $query3 = "SELECT COUNT(*) AS pocet FROM `zaci` WHERE 1";
         $result = $connect->query($query) or die("Fault1");
         $result2 = $connect->query($query2) or die("Fault2");
         $result3 = $connect->query($query3) or die("Fault3");
@@ -171,7 +173,8 @@ function menus(){
             $date = $row->event_date;
         }
         $questionsSet = !empty(($result2->fetch_object())->question_number);
-        $readyForNextTime = empty(($result3->fetch_object())->zak_id);
+        $studentCount = $result3->fetch_object()->pocet;
+        $readyForNextTime = ($studentCount == 0);
     ?>
     <form action="" method="POST">
         <input type="date" name="eventDate" value=<?php echo('"' . $date . '"');?>>
@@ -224,6 +227,9 @@ function menus(){
             </td>
         </tr>
         <tr style="height:15px">
+            <td><?php echo("Počet soutěžících: " . $studentCount) ?></td>
+        </tr>
+        <tr style="height:15px">
             <td></td>
         </tr>
         <tr>
@@ -231,15 +237,12 @@ function menus(){
             if($readyForNextTime and !$registration and !$competition and !$results and !$emailBefore and !$emailLogin and !$emailResult and empty($questionsSet)){
                 echo('style="background-color: lightgreen; text-align:center;"');
             }else{echo('style="background-color: #FF5559; text-align:center;"');}?>>Resetováno</td>
-            <!--<td class=tableElements <?php
-            if($email){
-                //echo('style="background-color: lightgreen; text-align:center;"');
-            }else{//echo('style="background-color: #FF5559; text-align:center;"');}?>>Emaily</td> -->
-            <td class=tableElements <?php }
+            <td class=tableElements <?php
             if(!empty($questionsSet)){
                 echo('style="background-color: lightgreen; text-align:center;"');
             }else{echo('style="background-color: #FF5559; text-align:center;"');}?>>Úlohy</td>
             <td class=tableElements <?php
+            echo($registration);
             //if(!empty($questionsSet)){
                 //echo('style="background-color: lightgreen; text-align:center;"');
             //}else{echo('style="background-color: #FF5559; text-align:center;"');}?>>Obodováno</td>
@@ -251,12 +254,6 @@ function menus(){
                     <input type="submit" value="Zresetovat vše" style="width:100%">
                 </form>
             </td>
-            <!--<td class=tableElements>
-                <form action="" method="GET">
-                    <input type="hidden" name="action" value="sendEmails">
-                    <input type="submit" value="Rozeslat emaily" style="width:100%">
-                </form>
-            </td> -->
             <td class=tableElements>
                 <form action="./setTasks.php" method="GET">
                     <input type="hidden" name="action" value="prepareTasks">

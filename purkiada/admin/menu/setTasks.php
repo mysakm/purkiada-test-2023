@@ -94,11 +94,11 @@ function menus(){
             }else{
                 echo('<label for="upload' . $questionNumber . '">Nahrát soubor</label><input type="radio" id="upload' . $questionNumber . '" name="type' . $questionNumber . '" value="2">');
             }
-            //if ($type == '3') {
-            //    echo('<label for="hook' . $questionNumber . '">Webhook</label><input type="radio" id="hook' . $questionNumber . '" name="type' . $questionNumber . '" value="3" checked="checked">');
-            //}else{
-            //    echo('<label for="hook' . $questionNumber . '">Webhook</label><input type="radio" id="hook' . $questionNumber . '" name="type' . $questionNumber . '" value="3">');
-            //}
+            if ($type == '3') {
+                echo('<label for="hook' . $questionNumber . '">Webhook</label><input type="radio" id="hook' . $questionNumber . '" name="type' . $questionNumber . '" value="3" checked="checked">');
+            }else{
+                echo('<label for="hook' . $questionNumber . '">Webhook</label><input type="radio" id="hook' . $questionNumber . '" name="type' . $questionNumber . '" value="3">');
+            }
             echo('<p> Maximální množství bodů:</p> <input type="number" name="points[]" value="' . $points . '">');
         }
         if(empty($questionNumber)){$questionNumber = 0;}
@@ -157,7 +157,7 @@ function menus(){
         form.insertBefore(uploadRadio, currentquestion);
         form.insertBefore(document.createElement("br"), currentquestion); // radio button for upload
 
-        /*labelHook = document.createElement("label");
+        labelHook = document.createElement("label");
         labelHook.setAttribute("for", "hook" + currentQuestionNumber);
         labelHook.innerText="Webhook";
         form.insertBefore(labelHook, currentquestion);
@@ -167,7 +167,7 @@ function menus(){
         hookRadio.setAttribute("name", "type" + currentQuestionNumber);
         hookRadio.setAttribute("value", "3");
         form.insertBefore(hookRadio, currentquestion);
-        form.insertBefore(document.createElement("br"), currentquestion); // radio button for webhook*/
+        form.insertBefore(document.createElement("br"), currentquestion); // radio button for webhook
 
         answerP = document.createElement("p");
         answerP.innerText = "Počet bodů:";
