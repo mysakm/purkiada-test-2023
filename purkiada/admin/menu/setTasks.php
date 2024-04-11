@@ -64,6 +64,7 @@ function menus(){
             $connect->set_charset("utf8") or die("Charset chyba.");
             $query = "DELETE FROM `questions` WHERE 1";
             $result = $connect->query($query) or die("Fault2");
+            $stringPreparation = str_replace('"', "'", $stringPreparation);
             $query = "INSERT INTO `questions`(`question_number`, `question`, `type`, `max_points`) VALUES " . $stringPreparation;
             $result = $connect->query($query) or die("Fault3");
             $connect->close();
@@ -82,7 +83,7 @@ function menus(){
             for ($i = 0; $i < substr_count($question, "{file}"); $i++) {
                 echo("<input type='file' name='files". $questionNumber . "[]'>");
             }
-            echo("<p>Typ odpovědi:</p> ");
+           /* echo("<p>Typ odpovědi:</p> ");
             if ($type == '1') {
                 echo('<label for="text' . $questionNumber . '">Text</label><input type="radio" id="text' . $questionNumber . '" name="type' . $questionNumber . '" value="1" checked="checked">');
             }else{
@@ -93,7 +94,7 @@ function menus(){
                 echo('<label for="upload' . $questionNumber . '">Nahrát soubor</label><input type="radio" id="upload' . $questionNumber . '" name="type' . $questionNumber . '" value="2" checked="checked">');
             }else{
                 echo('<label for="upload' . $questionNumber . '">Nahrát soubor</label><input type="radio" id="upload' . $questionNumber . '" name="type' . $questionNumber . '" value="2">');
-            }
+            }*/
             if ($type == '3') {
                 echo('<label for="hook' . $questionNumber . '">Webhook</label><input type="radio" id="hook' . $questionNumber . '" name="type' . $questionNumber . '" value="3" checked="checked">');
             }else{
@@ -133,7 +134,7 @@ function menus(){
         answerP.innerText = "Typ odpovědi:";
         form.insertBefore(answerP, currentquestion); // creates answer text
 
-        labelText = document.createElement("label");
+        /*labelText = document.createElement("label");
         labelText.setAttribute("for", "text" + currentQuestionNumber);
         labelText.innerText="Text";
         form.insertBefore(labelText, currentquestion);
@@ -155,7 +156,7 @@ function menus(){
         uploadRadio.setAttribute("name", "type" + currentQuestionNumber);
         uploadRadio.setAttribute("value", "2");
         form.insertBefore(uploadRadio, currentquestion);
-        form.insertBefore(document.createElement("br"), currentquestion); // radio button for upload
+        form.insertBefore(document.createElement("br"), currentquestion); // radio button for upload*/
 
         labelHook = document.createElement("label");
         labelHook.setAttribute("for", "hook" + currentQuestionNumber);
@@ -170,7 +171,7 @@ function menus(){
         form.insertBefore(document.createElement("br"), currentquestion); // radio button for webhook
 
         answerP = document.createElement("p");
-        answerP.innerText = "Počet bodů:";
+        answerP.innerText = "Maximální množství bodů:";
         form.insertBefore(answerP, currentquestion); // creates answer text
 
         answerTextarea = document.createElement("input");

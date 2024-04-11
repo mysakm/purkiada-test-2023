@@ -11,5 +11,7 @@
     require("../banner.php");
     banner();
     ?>
+    <div class="main"> <!-- v této třídě je hlavní tělo stránky, pokud používáte zpracovaný banner -->
+    </div>
 </body>
 </html>

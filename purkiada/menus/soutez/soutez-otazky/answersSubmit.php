@@ -1,10 +1,9 @@
 <?php
 session_start();
-session_start();
 if (empty($_SESSION["username"])){
     die();
 }
-//enctype="multipart/form-data"
+/*//enctype="multipart/form-data"
 $target_dir = "../../../data/answers/Odpoved";
 $fileNumber = 0;
 $filesUploaded= [];
@@ -15,7 +14,7 @@ while(!empty($_FILES["files" . ($processedQuestionNumber)]["name"][$fileNumber])
     $filesUploaded[$fileNumber] = $target_file;
     move_uploaded_file($_FILES["files" . $processedQuestionNumber]["tmp_name"][$fileNumber], $target_file);
     $fileNumber++;
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">

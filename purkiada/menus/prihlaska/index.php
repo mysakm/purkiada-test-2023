@@ -44,7 +44,8 @@
         }else{
             $connect = new mysqli($host, $user, $pass, $db) or die("Připojení se nezdařilo.");
             $connect->set_charset("utf8") or die("Charset chyba.");
-            $query = "SELECT COUNT(*) as count FROM `schools` WHERE `full_name` = '" . $_POST['school'] . "'";
+            $schoolCleared = str_replace('"','',$_POST["school"]);
+            $query = "SELECT COUNT(*) as count FROM `schools` WHERE `full_name` = '" . $schoolCleared . "'";
             $result = $connect->query($query) or die("Chyba ziskani škol.");
             $count;
             while($row = $result ->fetch_object()) {
@@ -57,7 +58,7 @@
                 //INSERT INTO `zaci`(`zak_id`, `name`, `surname`, `email`, `city`, `schools_id`) VALUE (NULL, "a", "b", "c", "d", 69752)
                 //ALTER TABLE zaci AUTO_INCREMENT = 1
                 $code = random_int(10000, 99999);
-                $msg = "Právě nám přišel požadavek o registraci na rezervačním systému dne firem." . "<br>" . "Kód pro registraci je: " . $code . "<br>" . "Pokud jsi nezadal tento požadavek, nepřeposílej tento kód nikomu jinému, je možné, že ti chtějí vzít účet.";
+                $msg = "Právě nám přišel požadavek o registraci na soutěž Purkiáda." . "<br>" . "Kód pro registraci je: " . $code . "<br>" . "Pokud jsi nezadal tento požadavek, nepřeposílej tento kód nikomu jinému, je možné, že ti chtějí vzít účet.";
                 $msg = wordwrap($msg,70);
                 $mailto = $_POST['email'];
                 $mail = new PHPMailer();
@@ -73,7 +74,7 @@
                 $mail->Password = $emailpass;
                 $mail->setFrom($emailuser);
                 $mail->CharSet = 'UTF-8';
-                $mail->Subject = "Požadavek o registraci na den firem";
+                $mail->Subject = "Požadavek o registraci na Purkiádu";
                 $mail->Body = $msg;
                 $mail->AddAddress($mailto);
                 $mail->Send();
@@ -97,11 +98,25 @@
                 $connect->set_charset("utf8") or die("Charset chyba.");
                 $query1 = "SELECT `IZO` FROM `schools` WHERE full_name = '" . $_POST['school'] ."'";
                 $result = $connect->query($query1) or die ("chyba ziskani info IZO");
-                $query = 'INSERT INTO `zaci`(`zak_id`, `name`, `surname`, `email`, `schools_id`) VALUE (NULL, "' . $_POST['name'] . '", "' . $_POST['surname'] . '", "' . $_POST['email'] . '", ' . $result->fetch_object()->IZO . ')';
+                $preppedLoginBase = (substr($_POST['name'], 0, 2) . substr($_POST['surname'], 0, 2));
+                $preppedLogin = $preppedLoginBase;
+                $attempts = random_int(1, 255);
+                while(true){
+                    $query2 = "SELECT * FROM `zaci` WHERE `login` = '" . $preppedLogin . "'";
+                    $result2 = $connect->query($query2) or die("chyba generování jména");
+                    if(!empty($result2->fetch_object())){
+                        $preppedLogin = $preppedLoginBase . $attempts;
+                        $attempts = random_int(1, 255);
+                    }else{
+                        break;
+                    }
+                }
+                $query = 'INSERT INTO `zaci`(`zak_id`, `name`, `surname`, `email`, `schools_id`, `login`, `pwd`) VALUE (NULL, "' . $_POST['name'] . '", "' . $_POST['surname'] . '", "' . $_POST['email'] . '", ' . $result->fetch_object()->IZO . ', "' . $preppedLogin . '", "' . bin2hex(random_bytes(10)) . '")';
+                echo($query);
                 $result = $connect->query($query) or die("chyba ziskani info 2" . print_r($connect));
                 $connect->close();
                 ?>
-                <div class="main">
+                <div class="main"> <!-- vzhled hlavní části stránky při úspěšném přihlášení -->
                     <h1>Děkujeme!</h1>
                     <p>Bližší informace ti přijdou do emailu několik dní před soutěží.</p>
                 </div>
@@ -112,7 +127,7 @@
         require("../banner.php");
         banner()
         ?>
-        <div class="main">
+        <div class="main"> <!-- vzhled hlavní části stránky při nedostupných přihláškách -->
             <p>Litujeme, ale přihlášky jsou momentálně uzavřeny.</p>
         </div>
         <?php
@@ -124,7 +139,7 @@
 function login_sheet($isError, $where){
     require("../../data/sql.php");
     ?>
-    <div class="main">
+    <div class="main"> <!-- vzhled hlavní části stránky při dostupných přihláškách -->
         <form action="" method="POST">
             <h1>Přihlášení (1/2)</h1>
             <table>

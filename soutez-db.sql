@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Počítač: 127.0.0.1
--- Vytvořeno: Ned 07. dub 2024, 16:35
--- Verze serveru: 10.4.27-MariaDB
--- Verze PHP: 8.2.0
+-- Host: 127.0.0.1
+-- Generation Time: Apr 11, 2024 at 02:56 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `soutez-db`
+-- Database: `soutez-db`
 --
+CREATE DATABASE IF NOT EXISTS `soutez-db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `soutez-db`;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `answers`
+-- Table structure for table `answers`
 --
 
 CREATE TABLE `answers` (
@@ -37,7 +39,7 @@ CREATE TABLE `answers` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `competition_status`
+-- Table structure for table `competition_status`
 --
 
 CREATE TABLE `competition_status` (
@@ -57,16 +59,16 @@ CREATE TABLE `competition_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
--- Vypisuji data pro tabulku `competition_status`
+-- Dumping data for table `competition_status`
 --
 
 INSERT INTO `competition_status` (`registration_open`, `competition_open`, `results_available`, `event_date`, `upcoming_email_template`, `login_email_template`, `result_email_template`, `upcoming_email_sent`, `login_email_sent`, `result_email_sent`, `upcoming_email_title`, `login_email_title`, `result_email_title`) VALUES
-(0, 0, 0, '2025-02-14', 'PURKIÁDA {eventYear}<br>připomínáme, že jsi se přihlásil do soutěže Purkiáda {eventYear}. Tato soutěž proběhne za týden, v {eventDay} {eventDate} v učebnách naší školy, Purkyňova 97. <br><br>Posíláme bližší informace k průběhu soutěže:<br>7:30-8:20 ... registrace soutěžících (přízemí, vpravo od vchodu do školy, směrem k jídleně a kantýně)<br>8:20-8:45 ... zahájení soutěže v jídelně školy (přízemí vpravo)<br>8:45-9:00 ... odchod do počítačových učeben, administrace<br>9:00-11:50 ... řešení úloh v počítačových učebnách<br>11:50-12:00 ... vyplnění evaluačního dotazníku<br>12:00 ... ukončení soutěže, pro zájemce prohlídka školy<br><br>* Pokud se z nějakého důvodu nebudeš moci soutěže zúčastnit, dej nám prosím co nejdřív vědět. <br>* S sebou si nemusíš nic brát, ani přezůvky ani nic na psaní.<br>* Prosíme, přijď až po 7:30, ať nemrzneš zbytečně dlouho před školou.<br><br>Děkujeme a těšíme se na tebe za týden.', 'hello bitchees', 'angery.avawi', 0, 0, 0, '0', '0', 'Výsledky purkiády');
+(0, 0, 0, '2024-08-19', 'PURKIÁDA {eventYear}<br>připomínáme, že jsi se přihlásil do soutěže Purkiáda {eventYear}. Tato soutěž proběhne za týden, v {eventDay} {eventDate} v učebnách naší školy, Purkyňova 97. <br><br>Posíláme bližší informace k průběhu soutěže:<br>7:30-8:20 ... registrace soutěžících (přízemí, vpravo od vchodu do školy, směrem k jídleně a kantýně)<br>8:20-8:45 ... zahájení soutěže v jídelně školy (přízemí vpravo)<br>8:45-9:00 ... odchod do počítačových učeben, administrace<br>9:00-11:50 ... řešení úloh v počítačových učebnách<br>11:50-12:00 ... vyplnění evaluačního dotazníku<br>12:00 ... ukončení soutěže, pro zájemce prohlídka školy<br><br>* Pokud se z nějakého důvodu nebudeš moci soutěže zúčastnit, dej nám prosím co nejdřív vědět. <br>* S sebou si nemusíš nic brát, ani přezůvky ani nic na psaní.<br>* Prosíme, přijď až po 7:30, ať nemrzneš zbytečně dlouho před školou.<br><br>Děkujeme a těšíme se na tebe za týden.', 'Login: {login}<br>Heslo: {password}', 'angery.avawi', 0, 0, 0, 'Bližší údaje o Purkiádě', 'Přihlašovací údaje na soutěž', 'Výsledky purkiády');
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `permanent_logins`
+-- Table structure for table `permanent_logins`
 --
 
 CREATE TABLE `permanent_logins` (
@@ -76,7 +78,7 @@ CREATE TABLE `permanent_logins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
--- Vypisuji data pro tabulku `permanent_logins`
+-- Dumping data for table `permanent_logins`
 --
 
 INSERT INTO `permanent_logins` (`user_id`, `username`, `pwdHash`) VALUES
@@ -85,7 +87,7 @@ INSERT INTO `permanent_logins` (`user_id`, `username`, `pwdHash`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `questions`
+-- Table structure for table `questions`
 --
 
 CREATE TABLE `questions` (
@@ -98,7 +100,7 @@ CREATE TABLE `questions` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `schools`
+-- Table structure for table `schools`
 --
 
 CREATE TABLE `schools` (
@@ -141,7 +143,7 @@ CREATE TABLE `schools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Vypisuji data pro tabulku `schools`
+-- Dumping data for table `schools`
 --
 
 INSERT INTO `schools` (`RED_IZO`, `ICO`, `founding_entity`, `okres_id`, `kraj`, `okres_name`, `managing_office`, `ORP`, `ORP_name`, `full_name`, `short_name`, `street`, `house_number`, `orientation_number`, `village_number`, `postal_code`, `place`, `RUIAN_code`, `telephone`, `fax`, `primary_email`, `secondary_email`, `web_address`, `headmaster`, `IZO`, `type`, `kind_type`, `secondary_street`, `secondary_house_number`, `secondary_orientation_number`, `secondary_village_number`, `secondary_postal_code`, `secondary_place`, `secondary_RUIAN_code`, `capacity`, `founding_day`) VALUES
@@ -4636,27 +4638,29 @@ INSERT INTO `schools` (`RED_IZO`, `ICO`, `founding_entity`, `okres_id`, `kraj`, 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `session_management`
+-- Table structure for table `session_management`
 --
 
 CREATE TABLE `session_management` (
   `session_id` varchar(40) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  `timestamp` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
--- Vypisuji data pro tabulku `session_management`
+-- Dumping data for table `session_management`
 --
 
-INSERT INTO `session_management` (`session_id`, `user_id`) VALUES
-('320eb16bd7cfa14dbf3bf8c7aacf73154a64e3ed', 1029),
-('3bba83a32acb06e2ab1a5f2f4e13d09d57921977', 1029),
-('5cfb316b2975c1add86c1bae345f3b8f56ccfb66', 1029);
+INSERT INTO `session_management` (`session_id`, `user_id`, `timestamp`) VALUES
+('6b2a3641664456ecd71bc2e1f2d112a3a0e5722e', 1029, '2024-04-10 00:00:00'),
+('b56138f06d6e445946e7da0b9e2436b52a615f3e', 1029, '2024-04-10 00:00:00'),
+('c713b51c1f1a12e8bcf02838bd3f761df2e837dd', 1029, '2024-04-10 00:00:00'),
+('f0cc380bcafc56b42a53596a5019c42ca4136e9e', 1029, '2024-04-10 00:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `zaci`
+-- Table structure for table `zaci`
 --
 
 CREATE TABLE `zaci` (
@@ -4664,42 +4668,44 @@ CREATE TABLE `zaci` (
   `name` varchar(45) NOT NULL,
   `surname` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
-  `schools_id` int(11) NOT NULL
+  `schools_id` int(11) NOT NULL,
+  `login` varchar(25) NOT NULL,
+  `pwd` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
--- Indexy pro exportované tabulky
+-- Indexes for dumped tables
 --
 
 --
--- Indexy pro tabulku `answers`
+-- Indexes for table `answers`
 --
 ALTER TABLE `answers`
-  ADD UNIQUE KEY `question_number` (`question_number`),
-  ADD UNIQUE KEY `zak_id` (`zak_id`);
+  ADD UNIQUE KEY `unique_index_qnum_zID` (`question_number`,`zak_id`),
+  ADD KEY `zaci_ibfk_1` (`zak_id`);
 
 --
--- Indexy pro tabulku `permanent_logins`
+-- Indexes for table `permanent_logins`
 --
 ALTER TABLE `permanent_logins`
   ADD PRIMARY KEY (`user_id`),
   ADD KEY `username` (`username`);
 
 --
--- Indexy pro tabulku `questions`
+-- Indexes for table `questions`
 --
 ALTER TABLE `questions`
   ADD PRIMARY KEY (`question_number`);
 
 --
--- Indexy pro tabulku `schools`
+-- Indexes for table `schools`
 --
 ALTER TABLE `schools`
   ADD PRIMARY KEY (`IZO`),
   ADD KEY `IZO` (`IZO`);
 
 --
--- Indexy pro tabulku `session_management`
+-- Indexes for table `session_management`
 --
 ALTER TABLE `session_management`
   ADD PRIMARY KEY (`session_id`),
@@ -4707,42 +4713,44 @@ ALTER TABLE `session_management`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexy pro tabulku `zaci`
+-- Indexes for table `zaci`
 --
 ALTER TABLE `zaci`
   ADD PRIMARY KEY (`zak_id`),
   ADD UNIQUE KEY `zak_id` (`zak_id`),
-  ADD KEY `FK_school` (`schools_id`);
+  ADD UNIQUE KEY `login` (`login`),
+  ADD KEY `FK_school` (`schools_id`),
+  ADD KEY `login_2` (`login`);
 
 --
--- AUTO_INCREMENT pro tabulky
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pro tabulku `zaci`
+-- AUTO_INCREMENT for table `zaci`
 --
 ALTER TABLE `zaci`
   MODIFY `zak_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
--- Omezení pro exportované tabulky
+-- Constraints for dumped tables
 --
 
 --
--- Omezení pro tabulku `answers`
+-- Constraints for table `answers`
 --
 ALTER TABLE `answers`
   ADD CONSTRAINT `answers_ibfk_1` FOREIGN KEY (`question_number`) REFERENCES `questions` (`question_number`),
-  ADD CONSTRAINT `answers_ibfk_2` FOREIGN KEY (`zak_id`) REFERENCES `zaci` (`zak_id`);
+  ADD CONSTRAINT `zaci_ibfk_1` FOREIGN KEY (`zak_id`) REFERENCES `zaci` (`zak_id`);
 
 --
--- Omezení pro tabulku `session_management`
+-- Constraints for table `session_management`
 --
 ALTER TABLE `session_management`
   ADD CONSTRAINT `session_management_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `permanent_logins` (`user_id`);
 
 --
--- Omezení pro tabulku `zaci`
+-- Constraints for table `zaci`
 --
 ALTER TABLE `zaci`
   ADD CONSTRAINT `FK_school` FOREIGN KEY (`schools_id`) REFERENCES `schools` (`IZO`);

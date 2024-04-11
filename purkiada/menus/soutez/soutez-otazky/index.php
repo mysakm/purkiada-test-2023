@@ -22,6 +22,8 @@
         }
         elseif( $type == "2") {
             echo('<input type="file" name="Odpoved' . $questionNumber .'">');
+        }elseif($type == 3) {
+            echo("Odpovědi se ukládají automaticky.");
         }
     }
     ?>

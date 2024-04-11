@@ -5,7 +5,8 @@ require('../data/sql.php');
 if(!empty($_POST["username"])){
     $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
-    $query = 'SELECT `user_id` FROM `permanent_logins` WHERE `username` = "' . $_POST["username"] . '" AND `pwdHash` = "' . hash('ripemd160', $_POST['pwd']) . '"';
+    $usernameCleared = str_replace('"', "", $_POST["username"]);
+    $query = 'SELECT `user_id` FROM `permanent_logins` WHERE `username` = "' . $usernameCleared . '" AND `pwdHash` = "' . hash('ripemd160', $_POST['pwd']) . '"';
     $result = $connect->query($query) or die("Fault");
     $connect->close();
     $workWith = $result->fetch_object();
@@ -20,7 +21,9 @@ if(!empty($_POST["username"])){
         }
         $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
         $connect->set_charset("utf8") or die("Charset chyba.");
-        $query = 'INSERT INTO `session_management`(`session_id`, `user_id`) VALUE ("' . $sid . '",' . $resultUser . ')';
+        $query = 'INSERT INTO `session_management`(`session_id`, `user_id`, `timestamp`) VALUE ("' . $sid . '",' . $resultUser . ', "' . date("Y-m-d") . '")';
+        $result = $connect->query($query) or die("Fault");
+        $query = 'DELETE FROM `session_management` WHERE `timestamp` < ("' . date("Y-m-d", strtotime("-1 Months")) .'")';
         $result = $connect->query($query) or die("Fault");
         $connect->close();
         $_SESSION["access-key"] = $sid;
