@@ -29,20 +29,20 @@ function menus(){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purkiáda - nastavení informací</title>
+    <title>Purkiáda - nastavení stránky výsledků</title>
 </head>
 <body>
     <?php
-    if(isset($_POST["informationEdit"])){
-        $informationFile = fopen("../../menus/informace/index.php", "w") or die("Chyba otevření souboru.");
-        fwrite($informationFile, $_POST["informationEdit"]);
-        fclose($informationFile);
+    if(isset($_POST["resultsEdit"])){
+        $mainPageFile = fopen("../../menus/vysledky/index.php", "w") or die("Chyba otevření souboru.");
+        fwrite($mainPageFile, $_POST["resultsEdit"]);
+        fclose($mainPageFile);
     }
     ?>
-    <form action="" id="infoForm" type="POST">
-        <textarea form="infoForm" name="informationEdit" rows="40" cols="150">
+    <form action="" id="resultsForm" type="POST">
+        <textarea form="resultsForm" name="resultsEdit" rows="40" cols="150">
             <?php
-            readfile("../../menus/informace/index.php");
+            readfile("../../menus/vysledky/index.php");
             ?>
         </textarea>
         <p></p>

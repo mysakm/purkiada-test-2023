@@ -9,7 +9,7 @@
 </head>
 <?php
 $isMobile = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
-if ($isMobile and !isset($_POST["switch"])) {
+/*if ($isMobile and !isset($_POST["switch"])) {
     ?>
     <p>Ahoj! Zjistili jsme, že používáš mobilní zařízení. Chceš přepnout na verzi pro telefony?</p>
     <a href="./m/index.php">
@@ -20,7 +20,7 @@ if ($isMobile and !isset($_POST["switch"])) {
         <input type="submit" value="Ne">
     </form>
     <?php
-}else{
+}else{*/
 ?>
 <body>
     <div class="banner" style="border-bottom-width: 3px; border-bottom-color:lightgray; border-bottom-style:solid;">
@@ -52,7 +52,11 @@ if ($isMobile and !isset($_POST["switch"])) {
             </a>
             <?php
         }elseif($results == 1){
-
+            ?>
+            <a href="./menus/vysledky" class="banner-redirect">
+                <p>Výsledky</p>
+            </a>
+            <?php
         }else{
             ?>
             <a href="./menus/prihlaska" class="banner-redirect">
@@ -65,10 +69,10 @@ if ($isMobile and !isset($_POST["switch"])) {
             <p>Informace</p>
         </a>
     </div>
-    <div class="main"> <!-- v této třídě je hlavní tělo stránky, pokud používáte zpracovaný header -->
+    <div class="main"> <!-- v této třídě je hlavní tělo stránky, pokud používáte zpracovaný banner -->
     </div>
 </body>
 <?php
-}
+//}
 ?>
 </html>

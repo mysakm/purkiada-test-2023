@@ -74,7 +74,7 @@ function menus(){
                 case "sendEmails":
                     $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
                     $connect->set_charset("utf8") or die("Charset chyba.");
-                    $query = "SELECT email FROM `zaci`";
+                    $query = "SELECT `email`, `login`, `pwd` FROM `zaci`";
                     $resultEmailAddresses = $connect->query($query) or die("Fault1");
                     switch ($_GET['detail']) {
                         case 'before':
@@ -97,6 +97,13 @@ function menus(){
                     $connect->close();
                     while($row = $resultEmailAddresses->fetch_object()) {
                         $target = $row->email;
+                        $targetLogin = $row->login;
+                        $targetPwd = $row->pwd;
+                        $emailToSendPersonalized = str_replace("{login}",$targetLogin,$emailToSend);
+                        $emailSubjectPersonalized = str_replace("{login}",$targetLogin,$emailSubject);
+                        $emailToSendPersonalized = str_replace("{password}",$targetPwd,$emailToSendPersonalized);
+                        $emailSubjectPersonalized = str_replace("{password}",$targetPwd,$emailSubjectPersonalized);
+
                         $mail = new PHPMailer();
                         $mail->IsSmtp();
                         $mail->SMTPDebug = 0;
@@ -110,8 +117,8 @@ function menus(){
                         $mail->Password = $emailpass;
                         $mail->setFrom($emailuser);
                         $mail->CharSet = 'UTF-8';
-                        $mail->Subject = $emailSubject;
-                        $mail->Body = $emailToSend;
+                        $mail->Subject = $emailSubjectPersonalized;
+                        $mail->Body = $emailToSendPersonalized;
                         $mail->AddAddress($target);
                         $mail->Send();
                     }
@@ -334,6 +341,7 @@ function menus(){
             <td class=tableElements>Úvodní stránka</td>
             <td class=tableElements>Předchozí ročníky</td>
             <td class=tableElements>Informace</td>
+            <td class=tableElements>Výsledky</td>
         </tr>
         <tr>
             <td class=tableElements>
@@ -348,6 +356,11 @@ function menus(){
             </td>
             <td class=tableElements>
                 <a href="./informationEditor.php">
+                    Upravit
+                </a>
+            </td>
+            <td class=tableElements>
+                <a href="./resultsEditor.php">
                     Upravit
                 </a>
             </td>

@@ -23,33 +23,24 @@ if(!empty($_SESSION["access-key"])){
     die("Page access forbidden 403.");
 }
 function menus(){
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purkiáda - nastavení informací</title>
-</head>
-<body>
-    <?php
-    if(isset($_POST["informationEdit"])){
-        $informationFile = fopen("../../menus/informace/index.php", "w") or die("Chyba otevření souboru.");
-        fwrite($informationFile, $_POST["informationEdit"]);
-        fclose($informationFile);
+    require("../../data/sql.php");
+    echo("Celkem:");
+    $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
+    $connect->set_charset("utf8") or die("Charset chyba.");
+    $query = 'SELECT `zaci`.`login`, SUM(points) AS soucet FROM `answers` INNER JOIN `zaci` ON `answers`.`zak_id` = `zaci`.`zak_id` WHERE 1 GROUP BY `answers`.`zak_id`';
+    $result = $connect->query($query) or die("Fault");
+    $connect->close();
+    while ($row = $result->fetch_object()) {
+        echo("login: " . $row->login . ", celkem bodů: " . $row->soucet);
     }
-    ?>
-    <form action="" id="infoForm" type="POST">
-        <textarea form="infoForm" name="informationEdit" rows="40" cols="150">
-            <?php
-            readfile("../../menus/informace/index.php");
-            ?>
-        </textarea>
-        <p></p>
-        <input type="submit" value="Odeslat">
-    </form>
-</body>
-</html>
-<?php
+    echo("Jednotlivé body:");
+    $connect = new mysqli($host, $anothauser, $anothapass, $db) or die("pripojeni se nezdarilo");
+    $connect->set_charset("utf8") or die("Charset chyba.");
+    $query = 'SELECT `zaci`.`login`, `answers`.`question_number`, `answers`.`points` FROM `answers` INNER JOIN `zaci` ON `answers`.`zak_id` = `zaci`.`zak_id` WHERE 1';
+    $result = $connect->query($query) or die("Fault");
+    $connect->close();
+    while ($row = $result->fetch_object()) {
+        echo("login: " . $row->login . ", otázka číslo: " . $row->question_number . ", počet bodů: " . $row->points);
+    }
 }
 ?>

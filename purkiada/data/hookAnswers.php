@@ -3,14 +3,29 @@ require("./sql.php");
 if(isset($_POST["query"])){
     $connect = new mysqli($host, $user, $pass, $db) or die("Připojení se nezdařilo.");
     $connect->set_charset("utf8") or die("Charset chyba.");
-    $query = "SELECT * FROM `answers` WHERE `question_number` = " . $_POST["question_number"] . " AND `zak_id` = " . $_POST["zak_id"];
+    $query = "SELECT `competition_open` FROM `competition_status` WHERE 1";
     $result = $connect->query($query) or die("Chyba získání odpovědí");
-    $resultAlreadyExists = ($result->fetch_object())->zak_id;
-    if(empty($resultAlreadyExists)){
-        $query = "INSERT INTO `answers`(`question_number`, `zak_id`, `points`) VALUES ('" . $_POST["question_number"] . "','" . $_POST["zak_id"] . "','" . $_POST["points"] . "')";
+    $isCompRunning = ($result->fetch_object())->competition_open;
+    $intPoints = (int)$_POST['points'];
+    $intQNum = (int)$_POST['question_number'];
+    $intZak = (int)$_POST["zak_id"];
+    echo($intPoints . " " . $intQNum . " " . $intZak);
+    $query = "SELECT `max_points` FROM `questions` WHERE `question_number` = " . $_POST["question_number"];
+    $result = $connect->query($query) or die("Chyba získání odpovědí");
+    $maxPointsFromQuestion = ($result->fetch_object())->max_points;
+    if ($intPoints <= $maxPointsFromQuestion){
+        $query = "SELECT * FROM `answers` WHERE `question_number` = " . $intQNum . " AND `zak_id` = " . $intZak;
+        $result = $connect->query($query) or die("Chyba získání odpovědí");
+        $resultAlreadyExists = ($result->fetch_object())->zak_id;
+        if(empty($resultAlreadyExists)){
+            $query = "INSERT INTO `answers`(`question_number`, `zak_id`, `points`) VALUE ('" . $intQNum . "','" . $intZak . "','" . $intPoints . "')";
+        }else{
+            $query = "UPDATE `answers` SET `points`= " . $intPoints . " WHERE `zak_id` = " . $intZak . "AND `question_number` = " . $intQNum;
+        }
+        $result = $connect->query($query) or die("Chyba uložení odpovědí");
     }else{
-        $query = "UPDATE `answers` SET `points`= ". $_POST["points"] ." WHERE `zak_id` = " . $_POST["zak_id"] . "AND `question_number` = " . $_POST["question_number"];
+        $query = "DELETE FROM `answers` WHERE `zak_id` = " . $_POST["zak_id"];
+        $result = $connect->query($query) or die("Chyba smazání odpovědí.");
     }
-    $result = $connect->query($query) or die("Chyba uložení odpovědí");
 }
 ?>

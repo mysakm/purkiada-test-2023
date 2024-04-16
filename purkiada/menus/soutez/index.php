@@ -4,13 +4,15 @@ session_start();
 if(!empty($_POST["login"])){
     $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
     $connect->set_charset("utf8") or die("Charset chyba.");
-    $query = 'SELECT * FROM `zaci` WHERE username = "' . $_POST["login"] . '" AND pwd = "' . $_POST["password"] . '"';
+    $loginCleared = str_replace('"','',$_POST["login"]);
+    $pwdCleared = str_replace('"','',$_POST["password"]);
+    $query = 'SELECT * FROM `zaci` WHERE login = "' . $loginCleared . '" AND pwd = "' . $pwdCleared . '"';
     $result = $connect->query($query) or die("Fault1");
     $connect->close();
     $resultUser = ($result->fetch_object())->zak_id;
     if (!empty($resultUser)) {
         header("Location: ./soutez-otazky");
-        $_SESSION["username"] = $_POST["login"];
+        $_SESSION["username"] = $loginCleared;
         die();
     }
 }
@@ -20,7 +22,7 @@ if(!empty($_POST["login"])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Soutěž - login</title>
 </head>
 <body>
     <form action="" method="POST">
