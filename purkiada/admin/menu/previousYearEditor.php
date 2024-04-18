@@ -39,7 +39,7 @@ function menus(){
         fclose($prevYearFile);
     }
     ?>
-    <form action="" id="prevYearForm" type="POST">
+    <form action="" id="prevYearForm" method="POST">
         <textarea form="prevYearForm" name="prevYearEdit" rows="40" cols="150">
             <?php
             readfile("../../menus/predchozi-rocniky/index.php");

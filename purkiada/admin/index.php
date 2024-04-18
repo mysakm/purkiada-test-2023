@@ -30,7 +30,6 @@ if(!empty($_POST["username"])){
         header("Location: ./menu");
         die();
     }else{
-        echo(hash('ripemd160', $_POST['pwd']));
         login("Wrong login info.");
     }
 }elseif(!empty($_SESSION["access-key"])){

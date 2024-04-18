@@ -28,7 +28,7 @@ if(!empty($_POST["login"])){
     <form action="" method="POST">
         <input type="text" name="login">
         <input type="password" name="password">
-        <input type="submit">
+        <input type="submit" value="Přihlásit se">
         <?php
             if (isset($_POST["login"])) {
                 echo("Wrong login details");

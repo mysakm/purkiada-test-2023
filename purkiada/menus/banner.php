@@ -30,7 +30,11 @@ function banner(){
             </a>
             <?php
         }elseif($results == 1){
-
+            ?>
+            <a href="../vysledky" class="banner-redirect">
+                <p>Výsledky</p>
+            </a>
+            <?php
         }else{
             ?>
             <a href="../prihlaska" class="banner-redirect">

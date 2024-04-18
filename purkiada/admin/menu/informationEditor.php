@@ -39,7 +39,7 @@ function menus(){
         fclose($informationFile);
     }
     ?>
-    <form action="" id="infoForm" type="POST">
+    <form action="" id="infoForm" method="POST">
         <textarea form="infoForm" name="informationEdit" rows="40" cols="150">
             <?php
             readfile("../../menus/informace/index.php");

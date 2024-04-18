@@ -39,7 +39,7 @@ function menus(){
         fclose($mainPageFile);
     }
     ?>
-    <form action="" id="mainPageForm" type="POST">
+    <form action="" id="mainPageForm" method="POST">
         <textarea form="mainPageForm" name="mainPageEdit" rows="40" cols="150">
             <?php
             readfile("../../index.php");

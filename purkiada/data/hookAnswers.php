@@ -1,6 +1,6 @@
 <?php
 require("./sql.php");
-if(isset($_POST["query"])){
+if(isset($_POST["query"]) and isset($POST_['points']) and isset($POST_['question_number']) and isset($POST_['zak_id'])){
     $connect = new mysqli($host, $user, $pass, $db) or die("Připojení se nezdařilo.");
     $connect->set_charset("utf8") or die("Charset chyba.");
     $query = "SELECT `competition_open` FROM `competition_status` WHERE 1";
@@ -9,7 +9,6 @@ if(isset($_POST["query"])){
     $intPoints = (int)$_POST['points'];
     $intQNum = (int)$_POST['question_number'];
     $intZak = (int)$_POST["zak_id"];
-    echo($intPoints . " " . $intQNum . " " . $intZak);
     $query = "SELECT `max_points` FROM `questions` WHERE `question_number` = " . $_POST["question_number"];
     $result = $connect->query($query) or die("Chyba získání odpovědí");
     $maxPointsFromQuestion = ($result->fetch_object())->max_points;
@@ -24,8 +23,11 @@ if(isset($_POST["query"])){
         }
         $result = $connect->query($query) or die("Chyba uložení odpovědí");
     }else{
+        echo("Maximální počet bodů z otázky překročen. Toto je po dobu soutěže nejspíše zaviněno podváděním. Odstraňuji data žáka. DNF.");
         $query = "DELETE FROM `answers` WHERE `zak_id` = " . $_POST["zak_id"];
         $result = $connect->query($query) or die("Chyba smazání odpovědí.");
     }
+}else{
+    echo("Chyba formátu požadavku.");
 }
 ?>

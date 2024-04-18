@@ -39,7 +39,7 @@ function menus(){
         fclose($mainPageFile);
     }
     ?>
-    <form action="" id="resultsForm" type="POST">
+    <form action="" id="resultsForm" method="POST">
         <textarea form="resultsForm" name="resultsEdit" rows="40" cols="150">
             <?php
             readfile("../../menus/vysledky/index.php");
