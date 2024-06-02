@@ -1,4 +1,4 @@
-<?php
+            <?php
 require("../../data/sql.php");
 $connect = new mysqli($host, $user, $pass, $db) or die("pripojeni se nezdarilo");
 $connect->set_charset("utf8") or die("Charset chyba.");
@@ -32,7 +32,7 @@ if ($results != 1){
 ?>
 <div class="main">
 <h2>Výsledky soutěže:</h2>
-<p>Gratulujeme všem vítězům a přejeme hodně štěstí na přijímačkách poraženým.</p>
+<p>Gratulujeme všem vítězům!</p>
     <table style="border:black; border-style: solid; border-collapse: collapse">
         <?php
     while ($row = $result->fetch_object()) {
@@ -72,4 +72,4 @@ if ($results != 1){
 </html>
 <?php
 }
-?>
+?>        

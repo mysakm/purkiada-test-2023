@@ -65,7 +65,6 @@ function menus(){
             $query = "DELETE FROM `questions` WHERE 1";
             $result = $connect->query($query) or die("Fault2");
             $query = "INSERT INTO `questions`(`question_number`, `question`, `type`, `max_points`) VALUES " . $stringPreparation;
-            echo($query);
             $result = $connect->query($query) or die("Fault3");
             $connect->close();
         }

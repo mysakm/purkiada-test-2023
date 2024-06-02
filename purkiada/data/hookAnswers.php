@@ -1,6 +1,6 @@
 <?php
 require("./sql.php");
-if(isset($_POST["query"]) and isset($POST_['points']) and isset($POST_['question_number']) and isset($POST_['zak_id'])){
+if(isset($_POST["query"]) and isset($_POST['points']) and isset($_POST['question_number']) and isset($_POST['zak_id'])){
     $connect = new mysqli($host, $user, $pass, $db) or die("Připojení se nezdařilo.");
     $connect->set_charset("utf8") or die("Charset chyba.");
     $query = "SELECT `competition_open` FROM `competition_status` WHERE 1";
@@ -19,7 +19,7 @@ if(isset($_POST["query"]) and isset($POST_['points']) and isset($POST_['question
         if(empty($resultAlreadyExists)){
             $query = "INSERT INTO `answers`(`question_number`, `zak_id`, `points`) VALUE ('" . $intQNum . "','" . $intZak . "','" . $intPoints . "')";
         }else{
-            $query = "UPDATE `answers` SET `points`= " . $intPoints . " WHERE `zak_id` = " . $intZak . "AND `question_number` = " . $intQNum;
+            $query = "UPDATE `answers` SET `points`= " . $intPoints . " WHERE `zak_id` = " . $intZak . " AND `question_number` = " . $intQNum;
         }
         $result = $connect->query($query) or die("Chyba uložení odpovědí");
     }else{

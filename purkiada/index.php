@@ -70,6 +70,9 @@ $isMobile = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile")
         </a>
     </div>
     <div class="main"> <!-- v této třídě je hlavní tělo stránky, pokud používáte zpracovaný banner -->
+        <h1>Purkiáda</h1>
+        <p>Soutěž pro 9. ročníky ZŠ</p>
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. In rutrum. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Duis bibendum, lectus ut viverra rhoncus, dolor nunc faucibus libero, eget facilisis enim ipsum id lacus. Duis ante orci, molestie vitae vehicula venenatis, tincidunt ac pede. Nam quis nulla. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Maecenas lorem. Donec vitae arcu. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     </div>
 </body>
 <?php
