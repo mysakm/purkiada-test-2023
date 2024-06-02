@@ -43,7 +43,7 @@ function menus(){
                 if ($stringPreparation != "") {
                     $stringPreparation = $stringPreparation . ",";
                 }
-                $stringPreparation = $stringPreparation . "(" . ($processedQuestionNumber + 1) . ', "' . $_POST["task"][$processedQuestionNumber] . '", ' . $_POST["type". ($processedQuestionNumber+1)] . ', ' . $_POST["points"][$processedQuestionNumber] . ')';
+                $stringPreparation = $stringPreparation . "(" . ($processedQuestionNumber + 1) . ', "' . str_replace('"', "'", $_POST["task"][$processedQuestionNumber]) . '", ' . $_POST["type". ($processedQuestionNumber+1)] . ', ' . $_POST["points"][$processedQuestionNumber] . ')';
                 $processedQuestionNumber++;
                 $fileNumber = 0;
                 $filesUploaded= [];
@@ -64,8 +64,8 @@ function menus(){
             $connect->set_charset("utf8") or die("Charset chyba.");
             $query = "DELETE FROM `questions` WHERE 1";
             $result = $connect->query($query) or die("Fault2");
-            $stringPreparation = str_replace('"', "'", $stringPreparation);
             $query = "INSERT INTO `questions`(`question_number`, `question`, `type`, `max_points`) VALUES " . $stringPreparation;
+            echo($query);
             $result = $connect->query($query) or die("Fault3");
             $connect->close();
         }
